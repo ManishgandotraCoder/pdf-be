@@ -11,7 +11,7 @@ const app = express();
 app.use(cors({ origin: ORIGIN, credentials: false }));
 app.use(express.json({ limit: '2mb' }));
 const upload = multer({
-    limits: { fileSize: 25 * 1024 * 1024 }, // 25MB
+    limits: { fileSize: 100 * 1024 * 1024 }, // 25MB
 });
 app.get('/health', (_req, res) => res.json({ ok: true }));
 // CRUD: PDFs
