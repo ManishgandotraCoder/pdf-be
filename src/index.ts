@@ -25,18 +25,17 @@ const ALLOWED_ORIGINS = new Set(
 );
 
 const app = express();
-app.use(
-  cors({
-    origin(origin, cb) {
-      // Non-browser clients (curl/server-to-server) often send no Origin.
-      if (!origin) return cb(null, true);
-      return cb(null, ALLOWED_ORIGINS.has(origin));
-    },
-    credentials: false,
-    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-  }),
-);
-app.options('*', cors());
+const corsOptions: cors.CorsOptions = {
+  origin(origin, cb) {
+    // Non-browser clients (curl/server-to-server) often send no Origin.
+    if (!origin) return cb(null, true);
+    return cb(null, ALLOWED_ORIGINS.has(origin));
+  },
+  credentials: false,
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+};
+app.use(cors(corsOptions));
+app.options('*', cors(corsOptions));
 app.use(express.json({ limit: '2mb' }));
 
 const upload = multer({
