@@ -1,0 +1,115 @@
+{
+  "v": 1,
+  "byPdfId": {
+    "99f49c9d-18be-48c7-aa12-880f422eb11a": {
+      "v": 1,
+      "savedAt": 1776759109947,
+      "state": {
+        "tokens": {
+          "colors": [
+            "#000000"
+          ],
+          "fonts": [
+            "sans-serif"
+          ],
+          "sizes": [
+            7.7,
+            8,
+            9,
+            9.3,
+            9.7,
+            10,
+            11,
+            11.6,
+            12,
+            13.5,
+            14,
+            15.9,
+            18.4,
+            21,
+            31.6,
+            40.3,
+            41,
+            139.5
+          ]
+        },
+        "edits": {},
+        "imageEdits": {},
+        "layoutEdits": {},
+        "addedImages": {},
+        "addedVideos": {},
+        "addedTables": {},
+        "addedRichTexts": {},
+        "proposalSections": [
+          {
+            "id": "sec_mandatory_cover",
+            "catalogId": "cover",
+            "title": "Response to",
+            "mandatory": true,
+            "margins": {
+              "top": 48,
+              "right": 48,
+              "bottom": 48,
+              "left": 48
+            },
+            "startPageNum": 1
+          },
+          {
+            "id": "sec_mandatory_acceptance",
+            "catalogId": "acceptance",
+            "title": "Locations",
+            "mandatory": true,
+            "margins": {
+              "top": 48,
+              "right": 48,
+              "bottom": 48,
+              "left": 48
+            },
+            "startPageNum": 23
+          }
+        ],
+        "selPage": 1,
+        "zoom": 0.9,
+        "editorMode": "edit",
+        "activeAddTool": null
+      }
+    },
+    "d11cce2b-bfd1-4e52-a019-735da96d2163": {
+      "v": 1,
+      "savedAt": 1776746536946,
+      "state": {
+        "tokens": {
+          "colors": [
+            "#000000"
+          ],
+          "fonts": [
+            "sans-serif"
+          ],
+          "sizes": [
+            9.6,
+            10,
+            12,
+            13,
+            14,
+            14.1,
+            14.4,
+            18,
+            28
+          ]
+        },
+        "edits": {},
+        "imageEdits": {},
+        "layoutEdits": {},
+        "addedImages": {},
+        "addedVideos": {},
+        "addedTables": {},
+        "addedRichTexts": {},
+        "proposalSections": [],
+        "selPage": 0,
+        "zoom": 0.9,
+        "editorMode": "edit",
+        "activeAddTool": null
+      }
+    }
+  }
+}
