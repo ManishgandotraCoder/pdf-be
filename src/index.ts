@@ -14,10 +14,29 @@ import { deletePdfState, getPdfState, putPdfState } from './pdf-state.store.js';
 import { connectMongo } from './db.js';
 
 const PORT = Number.parseInt(process.env.PORT || '8787', 10);
-const ORIGIN = process.env.CORS_ORIGIN || 'http://localhost:4200';
+const CORS_ORIGINS_RAW =
+  process.env.CORS_ORIGINS ||
+  process.env.CORS_ORIGIN ||
+  'http://localhost:4200,http://localhost:5173,https://pdf-eight-omega.vercel.app';
+const ALLOWED_ORIGINS = new Set(
+  CORS_ORIGINS_RAW.split(',')
+    .map((s) => s.trim())
+    .filter(Boolean),
+);
 
 const app = express();
-app.use(cors({ origin: ORIGIN, credentials: false }));
+app.use(
+  cors({
+    origin(origin, cb) {
+      // Non-browser clients (curl/server-to-server) often send no Origin.
+      if (!origin) return cb(null, true);
+      return cb(null, ALLOWED_ORIGINS.has(origin));
+    },
+    credentials: false,
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  }),
+);
+app.options('*', cors());
 app.use(express.json({ limit: '2mb' }));
 
 const upload = multer({
@@ -102,7 +121,11 @@ async function main(): Promise<void> {
   await connectMongo();
   app.listen(PORT, () => {
     // eslint-disable-next-line no-console
-    console.log(`PDF API listening on http://localhost:${PORT} (CORS origin ${ORIGIN})`);
+    console.log(
+      `PDF API listening on http://localhost:${PORT} (CORS origins: ${Array.from(ALLOWED_ORIGINS).join(
+        ', ',
+      )})`,
+    );
   });
 }
 
