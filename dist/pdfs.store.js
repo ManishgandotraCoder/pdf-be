@@ -109,3 +109,25 @@ export async function readPdfBytes(id) {
         dl.on('end', () => resolve(Buffer.concat(chunks)));
     });
 }
+export async function replacePdfFile(id, input) {
+    await connectMongo();
+    const doc = await PdfModel.findById(id).exec();
+    if (!doc)
+        return null;
+    const nextFileId = await uploadPdfToGridFs(id, input.bytes);
+    const prevFileId = doc.fileId;
+    try {
+        if (input.filename?.trim())
+            doc.filename = input.filename.trim().slice(0, 240);
+        doc.fileId = nextFileId;
+        doc.byteSize = input.bytes.byteLength;
+        doc.updatedAt = Date.now();
+        await doc.save();
+    }
+    catch (error) {
+        await deleteGridFsFile(nextFileId);
+        throw error;
+    }
+    await deleteGridFsFile(prevFileId);
+    return toRecord(doc.toObject());
+}
