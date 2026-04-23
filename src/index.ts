@@ -8,6 +8,7 @@ import {
   getPdf,
   listPdfs,
   readPdfBytes,
+  replacePdfFile,
   updatePdf,
 } from './pdfs.store.js';
 import { deletePdfState, getPdfState, putPdfState } from './pdf-state.store.js';
@@ -75,6 +76,25 @@ app.put('/pdfs/:id', async (req, res) => {
   res.json({ pdf });
 });
 
+app.put('/pdfs/:id/file', upload.single('file'), async (req, res) => {
+  const id = String(req.params.id || '');
+  const meta = await getPdf(id);
+  if (!meta) return res.status(404).json({ error: 'not_found' });
+
+  const f = req.file;
+  if (!f) return res.status(400).json({ error: 'file_required' });
+
+  const filename = (f.originalname || meta.filename || 'edited.pdf').trim();
+  if (!filename.toLowerCase().endsWith('.pdf')) return res.status(400).json({ error: 'pdf_only' });
+
+  const pdf = await replacePdfFile(id, { filename, bytes: f.buffer });
+  if (!pdf) return res.status(404).json({ error: 'not_found' });
+
+  // Legacy overlay state no longer matches once the actual PDF bytes change.
+  await deletePdfState(id);
+  res.json({ pdf });
+});
+
 app.delete('/pdfs/:id', async (req, res) => {
   const id = String(req.params.id || '');
   const ok = await deletePdf(id);
@@ -135,4 +155,3 @@ try {
   console.error('Failed to start server:', err);
   process.exitCode = 1;
 }
-
